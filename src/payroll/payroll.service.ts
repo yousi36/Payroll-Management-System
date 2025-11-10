@@ -6,13 +6,19 @@ import { CreatePayrollDto } from './dto/create-payroll.dto';
 import { UpdatePayrollDto } from './dto/update-payroll.dto';
 import { toResponsePayrollDto } from './mapper/payroll.mapper';
 import { ResponsePayrollDto } from './dto/response-payroll.dto';
+import { EmployeeDocument } from '../employee/schemas/employee.schema';
+import { PopulatedEmployee } from '../employee/schemas/employee.schema';
+
 
 @Injectable()
 export class PayrollService {
-  constructor(@InjectModel(Payroll.name) private payrollModel: Model<PayrollDocument>) {}
+  constructor(@InjectModel(Payroll.name) private payrollModel: Model<PayrollDocument>,
+    @InjectModel('Employee') private readonly employeeModel: Model<EmployeeDocument>,
+  ) { }
 
   async create(data: CreatePayrollDto): Promise<ResponsePayrollDto> {
     try {
+      console.log(data);
       const payroll = new this.payrollModel(data);
       const saved = await payroll.save();
       return toResponsePayrollDto(saved);
@@ -25,7 +31,6 @@ export class PayrollService {
     const records = await this.payrollModel
       .find()
       .populate('employeeId', 'name')
-      .populate('createdBy', 'username')
       .exec();
     return records.map(toResponsePayrollDto);
   }
@@ -34,8 +39,8 @@ export class PayrollService {
     const record = await this.payrollModel
       .findById(id)
       .populate('employeeId', 'name')
-      .populate('createdBy', 'username')
       .exec();
+    console.log(record);
     if (!record) throw new NotFoundException(`Payroll with id ${id} not found`);
     return toResponsePayrollDto(record);
   }
@@ -50,5 +55,58 @@ export class PayrollService {
     const deleted = await this.payrollModel.findByIdAndDelete(id).exec();
     if (!deleted) throw new NotFoundException(`Payroll with id ${id} not found`);
     return toResponsePayrollDto(deleted);
+  }
+
+  async calculateSalary(employeeId: string, payPeriodStart: Date, payPeriodEnd: Date) {
+    const employeeDoc = await this.employeeModel
+      .findById(employeeId)
+      .populate('allowances')
+      .populate('deductions')
+      .populate({
+        path: 'attendances',
+        match: { date: { $gte: payPeriodStart, $lte: payPeriodEnd } },
+      })
+      .exec();
+
+    if (!employeeDoc) throw new NotFoundException('Employee not found');
+
+    const employee = employeeDoc as unknown as PopulatedEmployee;
+    console.log(JSON.stringify(employee.allowances, null, 2));
+    const totalAllowances = (employee.allowances || []).reduce((sum, a) => sum + a.amount, 0);
+    console.log("total allowance of employee is : ", totalAllowances);
+    const totalDeductions = (employee.deductions || []).reduce((sum, d) => {
+      if (d.type === 'percentage') return sum + (d.amount / 100) * employee.basicSalary;
+      return sum + d.amount;
+    }, 0);
+        console.log("total deduction of employee is : ", totalDeductions);
+    const absentDays = (employee.attendances || []).filter(a => a.status === 'Absent').length;
+    console.log("absent day:",absentDays);
+    const perDaySalary = employee.basicSalary / 30;
+    const grossSalary = employee.basicSalary + totalAllowances;
+    const netSalary = grossSalary - totalDeductions - absentDays * perDaySalary;
+    const payroll = new this.payrollModel({
+      employeeId: employee._id,
+      payPeriodStart,
+      payPeriodEnd,
+      grossSalary,
+      netSalary,
+      payType: 'Monthly',
+      paymentMethod: 'Bank',
+      status: 'Pending',
+    });
+
+    await payroll.save();
+    return {
+      employee: {
+        id: employee._id,
+        basicSalary: employee.basicSalary,
+      },
+      grossSalary,
+      netSalary,
+      totalAllowances,
+      totalDeductions,
+      absentDays,
+      payrollId: payroll._id,
+    };
   }
 }

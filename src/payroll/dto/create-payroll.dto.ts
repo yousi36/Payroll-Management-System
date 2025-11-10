@@ -30,13 +30,8 @@ export class CreatePayrollDto {
   @IsEnum(['Bank', 'Cash', 'Cheque'])
   paymentMethod: string;
 
-  @ApiProperty({ type: [String], required: false })
-  @IsOptional()
-  @IsMongoId({ each: true })
-  deductions?: string[];
-
-  @ApiProperty({ type: [String], required: false })
-  @IsOptional()
-  @IsMongoId({ each: true })
-  allowances?: string[];
+  @ApiProperty({ enum: ['Pending','Approved','Paid'], default: 'Pending' })
+   @IsEnum(['Pending','Approved','Paid'])
+  status: string;
+ 
 }

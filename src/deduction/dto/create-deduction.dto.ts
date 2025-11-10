@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString,IsNotEmpty } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateDeductionDto {
@@ -24,10 +24,9 @@ export class CreateDeductionDto {
   @IsEnum(['global', 'employee'])
   applicability: string;
 
-  @ApiProperty({ required: false, type: [String] })
-  @IsOptional()
-  @IsArray()
-  employee_ids?: Types.ObjectId[];
+@ApiProperty({ example: '675a31b9f58c2a02ef0d13a2' })
+  @IsNotEmpty()
+  employeeId: string;
 
   @ApiProperty({ default: true })
   @IsBoolean()

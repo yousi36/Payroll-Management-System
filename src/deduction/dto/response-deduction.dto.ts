@@ -20,9 +20,9 @@ export class ResponseDeductionDto {
   @ApiProperty({ enum: ['global', 'employee'] })
   readonly applicability: string;
 
-  @ApiProperty({ type: [String], required: false })
-  readonly employee_ids?: Types.ObjectId[];
-
+  @ApiProperty({ example: '675a31b9f58c2a02ef0d13a2' })
+  employeeId: string;
+  
   @ApiProperty()
   readonly is_active: boolean;
 

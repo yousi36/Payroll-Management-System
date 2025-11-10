@@ -12,9 +12,6 @@ export const toResponsePayrollDto = (payroll: PayrollDocument): ResponsePayrollD
     payType: payroll.payType,
     paymentMethod: payroll.paymentMethod,
     status: payroll.status,
-    createdBy: payroll.createdBy.toString(),
-    deductions: payroll.deductions.map(d => d.toString()),
-    allowances: payroll.allowances.map(a => a.toString()),
     createdAt: (payroll as any).createdAt,
     updatedAt: (payroll as any).updatedAt,
   };

@@ -7,10 +7,11 @@ import { ApiProperty } from '@nestjs/swagger';
 export type AttendanceDocument = Attendance & Document;
 
 @Schema({ timestamps: true })
-export class Attendance {
+export  class Attendance {
   @ApiProperty({ description: 'Reference to employee' })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Employee', required: true })
   employeeId: Employee;
+
 
   @ApiProperty({ description: 'Attendance date' })
   @Prop({ required: true })

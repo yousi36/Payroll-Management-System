@@ -13,7 +13,7 @@ import { CreateAllowanceDto } from './dto/create-allowance.dto';
 import { UpdateAllowanceDto } from './dto/update-allowance.dto';
 import { ResponseAllowanceDto } from './dto/response-allowance.dto';
 
-@ApiTags('Allowances')
+@ApiTags('Allowance')
 @Controller('allowance')
 export class AllowanceController {
   constructor(private readonly allowanceService: AllowanceService) {}

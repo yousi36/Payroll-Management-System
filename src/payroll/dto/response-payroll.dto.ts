@@ -29,15 +29,6 @@ export class ResponsePayrollDto {
   status: string;
 
   @ApiProperty()
-  createdBy: string;
-
-  @ApiProperty({ type: [String] })
-  deductions: string[];
-
-  @ApiProperty({ type: [String] })
-  allowances: string[];
-
-  @ApiProperty()
   createdAt: Date;
 
   @ApiProperty()

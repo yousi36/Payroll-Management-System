@@ -40,17 +40,7 @@ export class Payroll {
   @Prop({ enum: ['Pending','Approved','Paid'], default: 'Pending' })
   status: string;
 
-  @ApiProperty({ description: 'Created by user' })
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  createdBy: User;
 
-  @ApiProperty({ type: [Types.ObjectId], description: 'Deductions applied' })
-  @Prop({ type: [Types.ObjectId], ref: 'Deduction', default: [] })
-  deductions: Types.ObjectId[];
-
-  @ApiProperty({ type: [Types.ObjectId], description: 'Allowances applied' })
-  @Prop({ type: [Types.ObjectId], ref: 'Allowance', default: [] })
-  allowances: Types.ObjectId[];
 }
 
 export const PayrollSchema = SchemaFactory.createForClass(Payroll);

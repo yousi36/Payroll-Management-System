@@ -9,7 +9,8 @@ import { ResponseEmployeeDto } from './dto/response-employee.dto';
 
 @Injectable()
 export class EmployeeService {
-  constructor(@InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>) {}
+  constructor(@InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>
+) {}
 
   async create(createEmployeeDto: CreateEmployeeDto): Promise<ResponseEmployeeDto> {
     try {
@@ -46,4 +47,6 @@ export class EmployeeService {
     if (!deleted) throw new NotFoundException(`Employee with id ${id} not found`);
     return toResponseEmployeeDto(deleted);
   }
+
+  
 }

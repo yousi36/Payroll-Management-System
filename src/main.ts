@@ -13,6 +13,8 @@ async function bootstrap() {
     .addTag('Employees', 'Endpoints related to employee management')
     .addTag('Payrolls', 'Endpoints related to salary, bonuses, and deductions')
     .addTag('Attendance', 'Endpoints for attendance tracking')
+    .addTag('Allowance', 'Endpoints for Allowance tracking')
+    .addTag('Deduction', 'Endpoints for Deduction tracking')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

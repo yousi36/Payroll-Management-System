@@ -9,7 +9,7 @@ export function toResponseDeductionDto(deduction: Deduction): ResponseDeductionD
     type: deduction.type,
     amount: deduction.amount,
     applicability: deduction.applicability,
-    employee_ids: deduction.employee_ids,
+    employeeId: deduction.employeeId.toString(),
     is_active: deduction.is_active,
     is_mandatory: deduction.is_mandatory,
     createdAt:( deduction as any).createdAt,

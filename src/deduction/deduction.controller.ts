@@ -5,7 +5,7 @@ import { UpdateDeductionDto } from './dto/update-deduction.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ResponseDeductionDto } from './dto/response-deduction.dto';
 
-@ApiTags('Deductions')
+@ApiTags('Deduction')
 @Controller('deductions')
 export class DeductionController {
   constructor(private readonly deductionService: DeductionService) {}

@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation,ApiParam,ApiQuery,ApiResponse } from '@nestjs/swagger';
 import { PayrollService } from './payroll.service';
 import { CreatePayrollDto } from './dto/create-payroll.dto';
 import { UpdatePayrollDto } from './dto/update-payroll.dto';
@@ -28,6 +28,24 @@ export class PayrollController {
   findOne(@Param('id') id: string): Promise<ResponsePayrollDto> {
     return this.payrollService.findOne(id);
   }
+
+   
+ 
+  @Get('calculate/:employeeId')
+   @ApiOperation({ summary: 'Calculate salary for a specific employee' })
+  @ApiParam({ name: 'employeeId', description: 'Employee ID', required: true })
+  @ApiQuery({ name: 'start', description: 'Payroll period start date', required: true })
+  @ApiQuery({ name: 'end', description: 'Payroll period end date', required: true })
+  async calculateSalary(
+    @Param('employeeId') employeeId: string,
+    @Query('start') start: string,
+    @Query('end') end: string,
+  ) {
+    const payPeriodStart = new Date(start);
+    const payPeriodEnd = new Date(end);
+    return this.payrollService.calculateSalary(employeeId, payPeriodStart, payPeriodEnd);
+  }
+
 
   @Put(':id')
   @ApiOperation({ summary: 'Update payroll record' })
