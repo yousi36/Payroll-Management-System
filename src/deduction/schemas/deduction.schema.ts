@@ -1,16 +1,23 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { Employee } from '../../employee/schemas/employee.schema';
+import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export type DeductionSchema = Deduction & Document;
+import { Employee } from '../../employee/schemas/employee.schema';
+import { Type } from '@nestjs/common';
+
+export type DeductionDocument = Deduction & Document;
 @Schema({ timestamps: true })
 export class Deduction extends Document {
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId,  ref: 'Employee', required: true })
+  employeeId: string;
+
+  
   @Prop({ required: true })
   name: string; // e.g. "Tax", "Health Insurance"
 
 
-  @Prop({ type: Types.ObjectId, ref: 'Employee', required: true })
-  employeeId: Employee;
+  
 
 
   @Prop({ required: false })
@@ -43,4 +50,4 @@ export class Deduction extends Document {
   is_mandatory: boolean; // optional for some deductions like insurance
 }
 
-export const DeductionDocument = SchemaFactory.createForClass(Deduction);
+export const DeductionSchema = SchemaFactory.createForClass(Deduction);

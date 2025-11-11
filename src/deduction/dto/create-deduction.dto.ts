@@ -3,6 +3,12 @@ import { IsArray, IsBoolean, IsEnum, IsNumber, IsOptional, IsString,IsNotEmpty }
 import { Types } from 'mongoose';
 
 export class CreateDeductionDto {
+
+
+  @ApiProperty({ example: '675a31b9f58c2a02ef0d13a2' })
+  @IsNotEmpty()
+  employeeId: string;
+
   @ApiProperty()
   @IsString()
   name: string;
@@ -24,9 +30,7 @@ export class CreateDeductionDto {
   @IsEnum(['global', 'employee'])
   applicability: string;
 
-@ApiProperty({ example: '675a31b9f58c2a02ef0d13a2' })
-  @IsNotEmpty()
-  employeeId: string;
+
 
   @ApiProperty({ default: true })
   @IsBoolean()

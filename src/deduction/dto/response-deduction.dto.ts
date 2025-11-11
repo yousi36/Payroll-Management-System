@@ -3,35 +3,38 @@ import { Types } from 'mongoose';
 
 export class ResponseDeductionDto {
   @ApiProperty({ example: '674a0b5bf2c4d76f5e4e8a9a' })
-  readonly _id: string;
+  _id: string;
 
-  @ApiProperty()
-  readonly name: string;
-
-  @ApiProperty({ required: false })
-  readonly description?: string;
-
-  @ApiProperty({ enum: ['fixed', 'percentage'] })
-  readonly type: string;
-
-  @ApiProperty()
-  readonly amount: number;
-
-  @ApiProperty({ enum: ['global', 'employee'] })
-  readonly applicability: string;
-
+   
   @ApiProperty({ example: '675a31b9f58c2a02ef0d13a2' })
-  employeeId: string;
+  employeeId: string; 
+
   
   @ApiProperty()
-  readonly is_active: boolean;
+   name: string;
+
+  @ApiProperty({ required: false })
+   description?: string;
+
+  @ApiProperty({ enum: ['fixed', 'percentage'] })
+  type: string;
 
   @ApiProperty()
-  readonly is_mandatory: boolean;
+   amount: number;
+
+  @ApiProperty({ enum: ['global', 'employee'] })
+  applicability: string;
+
+  
+  @ApiProperty()
+   is_active: boolean;
 
   @ApiProperty()
-  readonly createdAt: Date;
+   is_mandatory: boolean;
 
   @ApiProperty()
-  readonly updatedAt: Date;
+  createdAt: Date;
+
+  @ApiProperty()
+   updatedAt: Date;
 }

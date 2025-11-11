@@ -74,6 +74,7 @@ export class PayrollService {
     console.log(JSON.stringify(employee.allowances, null, 2));
     const totalAllowances = (employee.allowances || []).reduce((sum, a) => sum + a.amount, 0);
     console.log("total allowance of employee is : ", totalAllowances);
+        console.log("total allowance of deduction is : ", employee.deductions);
     const totalDeductions = (employee.deductions || []).reduce((sum, d) => {
       if (d.type === 'percentage') return sum + (d.amount / 100) * employee.basicSalary;
       return sum + d.amount;
@@ -83,6 +84,8 @@ export class PayrollService {
     console.log("absent day:",absentDays);
     const perDaySalary = employee.basicSalary / 30;
     const grossSalary = employee.basicSalary + totalAllowances;
+    console.log("gross salaray is ",grossSalary);
+    console.log("absend day is salarya ",absentDays * perDaySalary)
     const netSalary = grossSalary - totalDeductions - absentDays * perDaySalary;
     const payroll = new this.payrollModel({
       employeeId: employee._id,

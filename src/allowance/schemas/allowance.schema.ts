@@ -1,14 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Employee } from '../../employee/schemas/employee.schema';
+import * as mongoose from 'mongoose';
 
 
 export type AllowanceDocument=Allowance & Document;
 @Schema({ timestamps: true })
 export class Allowance extends Document {
   @ApiProperty({ description: 'Reference to employee' })
-    @Prop({ type: Types.ObjectId, ref: 'Employee', required: true })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Employee', required: true })
     employeeId: Employee;
 
    

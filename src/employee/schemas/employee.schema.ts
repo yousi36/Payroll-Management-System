@@ -6,13 +6,13 @@ import { ApiProperty } from '@nestjs/swagger';
 export type EmployeeDocument = Employee & Document;
 
 import { AllowanceDocument } from '../../allowance/schemas/allowance.schema';
-import { DeductionSchema } from '../../deduction/schemas/deduction.schema';
+import { DeductionDocument } from '../../deduction/schemas/deduction.schema';
 import { AttendanceDocument } from '../../attendance/schemas/attendance.schema';
 import { PayrollDocument } from '../../payroll/schemas/payroll.schema';
 
 export type PopulatedEmployee = EmployeeDocument & {
   allowances: AllowanceDocument[];
-  deductions: DeductionSchema[];
+  deductions: DeductionDocument[];
   attendances: AttendanceDocument[];
   payrolls: PayrollDocument[];
 };
